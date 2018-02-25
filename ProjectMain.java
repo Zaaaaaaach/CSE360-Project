@@ -137,14 +137,13 @@ public class ProjectMain extends JFrame {
 		
 		// TextField
 		textArea = new JTextArea("\n + Click the \"Input File\" button to select the text file that you wish to have formatted.\n\n"
-										+ "\n + Click the \"Output File\" button to create a new text document with the formatted text.\n\n"
-										+ "\n + Click the \"Clear\" button to clear the text preview area.\n\n"
-										+ "\n + Click the \"Help\" button to display these instructions.");
+							+ "\n + Click the \"Output File\" button to create a new text document with the formatted text.\n\n"
+							+ "\n + Click the \"Clear\" button to clear the text preview area.\n\n"
+							+ "\n + Click the \"Help\" button to display these instructions.");
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		JScrollPane scrollPane = new JScrollPane(textArea);
-		//scrollPane.setPreferredSize(new Dimension(650, 450));
 		scrollPane.setBounds(220, 14, 715, 491);
 		panel.add(scrollPane);
 		
