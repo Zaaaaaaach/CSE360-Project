@@ -21,7 +21,7 @@ public class ProjectMain extends JFrame {
 	
 	public ProjectMain() {
 		createView();
-		setTitle("CSE360 - Project");
+		setTitle("CSE360 - Projects");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(950, 550);
 		setLocationRelativeTo(null);
