@@ -1,6 +1,0 @@
-this is a document that has a few words that can be used for whenI'm testing my program
-
-this is another line
-
-
-__ ~/ and this is another one!
