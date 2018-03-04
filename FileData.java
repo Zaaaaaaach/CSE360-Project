@@ -8,23 +8,24 @@ public class FileData {
 	
 	private int numOfLines, numOfWords, numOfLinesRemoved;
 	private double avgLineWords, avgLineLength;
-	private File inputFile;
 	private DecimalFormat avgFormat;
 	
-	public FileData(File inputFile) {
-		this.inputFile = inputFile;
+	public FileData(String input) {
+
 		this.numOfLines = 0;
 		this.numOfWords = 0;
 		this.numOfLinesRemoved = 0;
 		this.avgLineWords = 0.00;
 		this.avgLineLength = 0.00;
 		this.avgFormat = new DecimalFormat("0.00");
-		calculateFileData(inputFile);
+		calculateFileData(input);
+
 	}
 	
-	private void calculateFileData(File inputFile) {
+	private void calculateFileData(String input) {
+		
 		try {
-			FileReader reader = new FileReader(inputFile.getName());
+			FileReader reader = new FileReader(input);
 			BufferedReader br = new BufferedReader(reader);
 			String line = "";
 			while((line = br.readLine()) != null) {
@@ -34,7 +35,10 @@ public class FileData {
 			}
 			br.close();
 		}
-		catch(Exception e2) {}
+		catch(Exception e2) {
+
+			System.out.println("{0} exception caught."+ e2);
+		}
 	}
 	
 	public int getNumOfLines() {
