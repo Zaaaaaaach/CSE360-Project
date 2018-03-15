@@ -53,18 +53,20 @@ public class ProjectMain extends JFrame {
 		setInputFile.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				fileChooser.showOpenDialog(ProjectMain.this);
+				fileChooser.showOpenDialog(null);
 				try {
                     reader = new FileReader(fileChooser.getSelectedFile().toString());
                     inputFile = fileChooser.getSelectedFile();
-                    fileData = new FileData(inputFile);
+                    fileData = new FileData(fileChooser.getSelectedFile().toString());
                     BufferedReader br = new BufferedReader(reader);
                     updateLabels();
                     textArea.read(br, null);
                     br.close();
                     textArea.requestFocus();
                 }
-                catch(Exception e2) {}
+                catch(Exception e2) {
+                	System.out.println("{1} exception caught."+ e2);
+                }
 			}
 		});
 			// Select Output File
@@ -77,14 +79,17 @@ public class ProjectMain extends JFrame {
 				fileChooser.showSaveDialog(ProjectMain.this);
 				try {
 					if (inputFile != null) {
-						FileWriter outputFile = new FileWriter(fileChooser.getSelectedFile() + ".txt");
+						FileWriter outputFile = new FileWriter(fileChooser.getSelectedFile()+".txt");
 						outputFile.write(textArea.getText());
+						
 						outputFile.close();
 					} else {
-						
+						System.out.println("File is empty");
 					}
 				}
-				catch(Exception e2) {}
+				catch(Exception e2) {
+					System.out.println("{2} exception caught."+ e2);
+				}
 			}
 		});
 		clear = new JButton("Clear");
@@ -93,8 +98,8 @@ public class ProjectMain extends JFrame {
 		clear.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				inputFile = null;
-				fileData = new FileData(inputFile);
+				
+				fileData = new FileData("");
 				textArea.setText("");
 				updateLabels();
 			}

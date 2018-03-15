@@ -6,35 +6,47 @@ import java.text.DecimalFormat;
 
 public class FileData {
 	
-	private int numOfLines, numOfWords, numOfLinesRemoved;
+	private int numOfLines, numOfWords, numOfChars, numOfLinesRemoved;
 	private double avgLineWords, avgLineLength;
-	private File inputFile;
 	private DecimalFormat avgFormat;
+	private String[] words;
 	
-	public FileData(File inputFile) {
-		this.inputFile = inputFile;
+	public FileData(String input) {
+
 		this.numOfLines = 0;
 		this.numOfWords = 0;
 		this.numOfLinesRemoved = 0;
 		this.avgLineWords = 0.00;
 		this.avgLineLength = 0.00;
 		this.avgFormat = new DecimalFormat("0.00");
-		calculateFileData(inputFile);
+		calculateFileData(input);
+
 	}
 	
-	private void calculateFileData(File inputFile) {
+	private void calculateFileData(String input) {
+		
 		try {
-			FileReader reader = new FileReader(inputFile.getName());
+			FileReader reader = new FileReader(input);
 			BufferedReader br = new BufferedReader(reader);
 			String line = "";
-			while((line = br.readLine()) != null) {
-				String[] words = line.split(" ");
+			while ((line = br.readLine()) != null) {
 				numOfLines++;
-				numOfWords += words.length;
+				if (line.trim().isEmpty() || line.trim().equals("") || line.trim().equals("\n")) {
+					numOfLinesRemoved++;
+				} else {
+					words = line.split(" ");
+					numOfWords += words.length;
+					numOfChars += line.length();
+				}
 			}
+			numOfLines -= numOfLinesRemoved;
+			avgLineWords = (double) numOfWords / numOfLines;
+			avgLineLength = (double) numOfChars / numOfLines;
 			br.close();
 		}
-		catch(Exception e2) {}
+		catch(Exception e2) {
+
+		}
 	}
 	
 	public int getNumOfLines() {
@@ -50,7 +62,7 @@ public class FileData {
 	}
 	
 	public String getAvgLineWords() {
-		return avgFormat.format(avgLineLength);
+		return avgFormat.format(avgLineWords);
 	}
 	
 	public String getAvgLineLength() {
