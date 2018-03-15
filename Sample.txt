@@ -1,0 +1,6 @@
+This is a test file that is used to test
+if our project works
+
+It will be able
+to $^#(# read in each line and word
+//and    use it to do something
