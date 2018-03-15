@@ -79,10 +79,18 @@ public class ProjectMain extends JFrame {
 				fileChooser.showSaveDialog(ProjectMain.this);
 				try {
 					if (inputFile != null) {
-						FileWriter outputFile = new FileWriter(fileChooser.getSelectedFile()+".txt");
-						outputFile.write(textArea.getText());
+						FileWriter fw = new FileWriter(fileChooser.getSelectedFile().toString());
+						PrintWriter pw = new PrintWriter(fw);
+						fileData.formatFile(inputFile.toString(), pw);
 						
-						outputFile.close();
+						reader = new FileReader(fileChooser.getSelectedFile().toString());
+						fileData = new FileData(fileChooser.getSelectedFile().toString());
+	                    BufferedReader br = new BufferedReader(reader);
+	                    updateLabels();
+	                    textArea.read(br, null);
+	                    br.close();
+						
+						pw.close();
 					} else {
 						System.out.println("File is empty");
 					}

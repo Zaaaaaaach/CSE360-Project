@@ -19,7 +19,7 @@ public class FileData {
 		this.avgLineWords = 0.00;
 		this.avgLineLength = 0.00;
 		this.avgFormat = new DecimalFormat("0.00");
-		formatFile(input);
+		//formatFile(input);
 		calculateFileData(input);
 
 	}
@@ -50,14 +50,11 @@ public class FileData {
 		}
 	}
 	
-	public void formatFile(String input) {
+	public void formatFile(String input, PrintWriter outputFile) {
 		String line = "";
-		int count = 0;
 		try {
 			FileReader reader = new FileReader(input);
 			BufferedReader br = new BufferedReader(reader);
-			FileWriter writer = new FileWriter("output.txt");
-			PrintWriter outputFile = new PrintWriter(writer);
 			int limit = 0;
 			while ((line = br.readLine()) != null) {
 				line = line.trim();
