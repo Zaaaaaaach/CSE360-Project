@@ -11,11 +11,12 @@ import java.nio.charset.*;
 public class ProjectMain extends JFrame {
 	
 	private JPanel panel, buttonPanel;
-	private JButton setInputFile, setOutputFile, clear, help;
+	private JButton setInputFile, setOutputFile, leftJustify, rightJustify, clear, help;
 	private JLabel numberOfWords, numberOfLines, numberOfLinesRemoved, averageLineWords, averageLineLength;
 	private JTextArea textArea;
 	private JFileChooser fileChooser;
 	private File inputFile;
+	private String outputFile;
 	private FileReader reader;
 	private FileData fileData;
 	
@@ -40,36 +41,31 @@ public class ProjectMain extends JFrame {
 		panel.add(buttonPanel);
 		panel.setBackground(Color.GRAY);
 		buttonPanel.setBackground(Color.WHITE);
-		fileData = new FileData(null);
+		fileData = new FileData(inputFile);
 		
 		// File Chooser
 		fileChooser = new JFileChooser();
 		
 		// Buttons:
-			// Select Input File
+		// Select Input File
 		setInputFile = new JButton("Input File");
 		setInputFile.setBounds(20, 10, 150, 50);
 		setInputFile.setBackground(Color.LIGHT_GRAY);
 		setInputFile.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				fileChooser.showOpenDialog(null);
+				fileChooser.showOpenDialog(ProjectMain.this);
 				try {
-                    reader = new FileReader(fileChooser.getSelectedFile().toString());
-                    inputFile = fileChooser.getSelectedFile();
-                    fileData = new FileData(fileChooser.getSelectedFile().toString());
-                    BufferedReader br = new BufferedReader(reader);
-                    updateLabels();
-                    textArea.read(br, null);
-                    br.close();
-                    textArea.requestFocus();
+					inputFile = fileChooser.getSelectedFile();
+					updateInput(inputFile);
                 }
                 catch(Exception e2) {
-                	System.out.println("{1} exception caught."+ e2);
+                	System.out.println("ERROR: " + e2);
                 }
 			}
 		});
-			// Select Output File
+		
+		// select output file button
 		setOutputFile = new JButton("Output File");
 		setOutputFile.setBounds(20, 70, 150, 50);
 		setOutputFile.setBackground(Color.LIGHT_GRAY);
@@ -79,47 +75,73 @@ public class ProjectMain extends JFrame {
 				fileChooser.showSaveDialog(ProjectMain.this);
 				try {
 					if (inputFile != null) {
-						FileWriter outputFile = new FileWriter(fileChooser.getSelectedFile()+".txt");
-						outputFile.write(textArea.getText());
-						
-						outputFile.close();
-					} else {
-						System.out.println("File is empty");
+						outputFile = fileChooser.getSelectedFile() + ".txt";
+						FileWriter writer = new FileWriter(outputFile);
+						writer.write(textArea.getText());
+						writer.flush();
+						writer.close();
 					}
 				}
 				catch(Exception e2) {
-					System.out.println("{2} exception caught."+ e2);
+					System.out.println("ERROR: " + e2);
 				}
 			}
 		});
+		
+		leftJustify = new JButton("Left Justify");
+		leftJustify.setBounds(20, 130, 150, 50);
+		leftJustify.setBackground(Color.LIGHT_GRAY);
+		leftJustify.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				// TODO: left justify the text in the textArea...
+				
+			}
+		});
+		
+		rightJustify = new JButton("Right Justify");
+		rightJustify.setBounds(20, 190, 150, 50);
+		rightJustify.setBackground(Color.LIGHT_GRAY);
+		rightJustify.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				// TODO: right justify the text in the textArea...
+				
+			}
+		});
+		
+		// clear text button
 		clear = new JButton("Clear");
-		clear.setBounds(20, 130, 150, 50);
+		clear.setBounds(20, 250, 150, 50);
 		clear.setBackground(Color.LIGHT_GRAY);
 		clear.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				fileData = new FileData("");
-				textArea.setText("");
+				inputFile = null;
+				fileData = new FileData(null);
+				clearTextArea();
 				updateLabels();
 			}
 		});
+		
+		// help button
 		help = new JButton("Help");
-		help.setBounds(20, 190, 150, 50);
+		help.setBounds(20, 310, 150, 50);
 		help.setBackground(Color.LIGHT_GRAY);
 		help.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				fileData = new FileData(null);
-				textArea.setText("\n + Click the \"Input File\" button to select the text file that you wish to have formatted.\n\n"
-								+ "\n + Click the \"Output File\" button to create a new text document with the formatted text.\n\n"
-								+ "\n + Click the \"Clear\" button to clear the text preview area.\n\n"
-								+ "\n + Click the \"Help\" button to display these instructions.");
-				updateLabels();
+				helpInstructions();
 			}
 		});
+		
+		// button panel
 		buttonPanel.add(setInputFile);
 		buttonPanel.add(setOutputFile);
+		buttonPanel.add(leftJustify);
+		buttonPanel.add(rightJustify);
 		buttonPanel.add(clear);
 		buttonPanel.add(help);
 		
@@ -142,9 +164,9 @@ public class ProjectMain extends JFrame {
 		
 		// TextField
 		textArea = new JTextArea("\n + Click the \"Input File\" button to select the text file that you wish to have formatted.\n\n"
-							+ "\n + Click the \"Output File\" button to create a new text document with the formatted text.\n\n"
-							+ "\n + Click the \"Clear\" button to clear the text preview area.\n\n"
-							+ "\n + Click the \"Help\" button to display these instructions.");
+									+ "\n + Click the \"Output File\" button to create a new text document with the formatted text.\n\n"
+									+ "\n + Click the \"Clear\" button to clear the text preview area.\n\n"
+									+ "\n + Click the \"Help\" button to display these instructions.");
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
@@ -154,12 +176,46 @@ public class ProjectMain extends JFrame {
 		
 	}
 
+	public void updateInput(File input) {
+		try {
+			reader = new FileReader(fileChooser.getSelectedFile());
+			BufferedReader br = new BufferedReader(reader);
+			fileData = new FileData(input);
+			updateLabels();
+			updateTextArea(br);
+			br.close();
+		}
+		catch(Exception e2) {}
+	}
+	
 	public void updateLabels() {
 		numberOfWords.setText("Number of words: " + fileData.getNumOfWords());
 		numberOfLines.setText("Number of lines: " + fileData.getNumOfLines());
 		numberOfLinesRemoved.setText("Number of lines removed: " + fileData.getNumOfLinesRemoved());
 		averageLineWords.setText("Average words per line: " + fileData.getAvgLineWords());
 		averageLineLength.setText("Average line length: " + fileData.getAvgLineLength());
+	}
+	
+	public void updateTextArea(BufferedReader br) {
+		try {
+			textArea.read(br, null);
+			br.close();
+			textArea.requestFocus();
+		}
+		catch(Exception e2) {
+			System.out.println("ERROR: " + e2);
+		}
+	}
+	
+	public void clearTextArea() {
+		textArea.setText("");
+	}
+	
+	public void helpInstructions() {
+		textArea.setText("\n + Click the \"Input File\" button to select the text file that you wish to have formatted.\n\n"
+				+ "\n + Click the \"Output File\" button to create a new text document with the formatted text.\n\n"
+				+ "\n + Click the \"Clear\" button to clear the text preview area.\n\n"
+				+ "\n + Click the \"Help\" button to display these instructions.");
 	}
 
 	public static void main(String[] args) {
