@@ -11,7 +11,7 @@ import java.nio.charset.*;
 public class ProjectMain extends JFrame {
 	
 	private JPanel panel, buttonPanel;
-	private JButton setInputFile, setOutputFile, clear, help;
+	private JButton setInputFile, setOutputFile, clear, help, left, right;
 	private JLabel numberOfWords, numberOfLines, numberOfLinesRemoved, averageLineWords, averageLineLength;
 	private JTextArea textArea;
 	private JFileChooser fileChooser;
@@ -88,6 +88,8 @@ public class ProjectMain extends JFrame {
 	                    BufferedReader br = new BufferedReader(reader);
 	                    updateLabels();
 	                    textArea.read(br, null);
+	                    inputFile = fileChooser.getSelectedFile();
+	                    
 	                    br.close();
 						
 						pw.close();
@@ -126,10 +128,47 @@ public class ProjectMain extends JFrame {
 				updateLabels();
 			}
 		});
+		left = new JButton("Left Justification");
+		left.setBounds(20, 250, 150, 50);
+		left.setBackground(Color.LIGHT_GRAY);
+		left.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(inputFile != null) {
+					try {
+						reader = new FileReader(inputFile.toString());
+						BufferedReader br = new BufferedReader(reader);
+						String result = "", line = "";
+						while ((line = br.readLine()) != null) {
+							result += line.trim() + "\n";
+						}
+						textArea.setText(result);
+						br.close();
+					}
+					catch(Exception e) {}
+				}
+				
+			}		
+		});
+		right = new JButton("Right Justification");
+		right.setBounds(20, 310, 150, 50);
+		right.setBackground(Color.LIGHT_GRAY);
+		right.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(inputFile != null) {
+					
+				}
+				
+			}		
+		});
+		
 		buttonPanel.add(setInputFile);
 		buttonPanel.add(setOutputFile);
 		buttonPanel.add(clear);
 		buttonPanel.add(help);
+		buttonPanel.add(left);
+		buttonPanel.add(right);
 		
 		// Labels:
 		numberOfWords = new JLabel("Number of words: " + fileData.getNumOfWords());
