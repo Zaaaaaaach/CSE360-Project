@@ -1,6 +1,6 @@
-This is a test file that is used to test
-if our project works
+This is a test
+for the project
 
-It will be able
-to $^#(# read in each line and word
-//and    use it to do something
+that will be used to test the program
+
+YES!!!!
