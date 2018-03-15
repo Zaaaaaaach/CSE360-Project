@@ -135,17 +135,8 @@ public class ProjectMain extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(inputFile != null) {
-					try {
-						reader = new FileReader(inputFile.toString());
-						BufferedReader br = new BufferedReader(reader);
-						String result = "", line = "";
-						while ((line = br.readLine()) != null) {
-							result += line.trim() + "\n";
-						}
-						textArea.setText(result);
-						br.close();
-					}
-					catch(Exception e) {}
+					textArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+					textArea.setText(textArea.getText());
 				}
 				
 			}		
@@ -157,7 +148,8 @@ public class ProjectMain extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(inputFile != null) {
-					
+					textArea.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+					textArea.setText(textArea.getText());
 				}
 				
 			}		
