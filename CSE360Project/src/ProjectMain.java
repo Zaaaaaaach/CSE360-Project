@@ -2,6 +2,9 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -124,7 +127,9 @@ public class ProjectMain extends JFrame {
 				textArea.setText("\n + Click the \"Input File\" button to select the text file that you wish to have formatted.\n\n"
 								+ "\n + Click the \"Output File\" button to create a new text document with the formatted text.\n\n"
 								+ "\n + Click the \"Clear\" button to clear the text preview area.\n\n"
-								+ "\n + Click the \"Help\" button to display these instructions.");
+								+ "\n + Click the \"Help\" button to display these instructions.\n\n"
+								+ "\n + Click the \"Left Justification\" button to align the text left.\n\n"
+								+ "\n + Click the \"Right Justification\" button to align the text right.\n\n.");
 				updateLabels();
 			}
 		});
@@ -183,7 +188,9 @@ public class ProjectMain extends JFrame {
 		textArea = new JTextArea("\n + Click the \"Input File\" button to select the text file that you wish to have formatted.\n\n"
 							+ "\n + Click the \"Output File\" button to create a new text document with the formatted text.\n\n"
 							+ "\n + Click the \"Clear\" button to clear the text preview area.\n\n"
-							+ "\n + Click the \"Help\" button to display these instructions.");
+							+ "\n + Click the \"Help\" button to display these instructions.\n\n"
+							+ "\n + Click the \"Left Justification\" button to align the text left.\n\n"
+							+ "\n + Click the \"Right Justification\" button to align the text right.\n\n.");
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
