@@ -134,8 +134,8 @@ public class ProjectMain extends JFrame {
 				updateLabels();
 			}
 		});
-		left = new JButton("Left Justification");
-		left.setBounds(20, 250, 150, 50);
+		left = new JButton("L");
+		left.setBounds(20, 250, 50, 50);
 		left.setBackground(Color.LIGHT_GRAY);
 		left.addActionListener(new ActionListener() {
 			@Override
@@ -155,8 +155,8 @@ public class ProjectMain extends JFrame {
 				}
 			}		
 		});
-		right = new JButton("Right Justification");
-		right.setBounds(20, 310, 150, 50);
+		right = new JButton("R");
+		right.setBounds(120, 250, 50, 50);
 		right.setBackground(Color.LIGHT_GRAY);
 		right.addActionListener(new ActionListener() {
 			@Override
@@ -166,11 +166,9 @@ public class ProjectMain extends JFrame {
 						reader = new FileReader(inputFile.toString());
 						BufferedReader br = new BufferedReader(reader);
 						String line, result = "";
-						int lineLength = 0;
 						while ((line = br.readLine()) != null) {
 							line = line.trim();
 							if(line.length() != 0) {
-								lineLength = line.length();
 								while(line.length() <= 100) {
 									line = ' ' + line;
 								}
