@@ -31,6 +31,7 @@ public class FileData {
 			BufferedReader br = new BufferedReader(reader);
 			String line = "";
 			while ((line = br.readLine()) != null) {
+				line = line.trim();
 				numOfLines++;
 				if (line.trim().isEmpty() || line.trim().equals("") || line.trim().equals("\n")) {
 					numOfLinesRemoved++;

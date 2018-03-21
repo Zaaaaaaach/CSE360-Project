@@ -21,6 +21,7 @@ public class ProjectMain extends JFrame {
 	private File inputFile;
 	private FileReader reader;
 	private FileData fileData;
+	private JScrollPane scrollPane;
 	
 	public ProjectMain() {
 		createView();
@@ -140,10 +141,18 @@ public class ProjectMain extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(inputFile != null) {
-					textArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-					textArea.setText(textArea.getText());
+					try {
+						reader = new FileReader(inputFile.toString());
+						BufferedReader br = new BufferedReader(reader);
+						String line, result = "";
+						while ((line = br.readLine()) != null) {
+							line = line.trim();
+							result += line + "\n";
+						}
+						textArea.setText(result);
+					}
+					catch(Exception e) {}
 				}
-				
 			}		
 		});
 		right = new JButton("Right Justification");
@@ -153,8 +162,25 @@ public class ProjectMain extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(inputFile != null) {
-					textArea.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-					textArea.setText(textArea.getText());
+					try {
+						reader = new FileReader(inputFile.toString());
+						BufferedReader br = new BufferedReader(reader);
+						String line, result = "";
+						int lineLength = 0;
+						while ((line = br.readLine()) != null) {
+							line = line.trim();
+							if(line.length() != 0) {
+								lineLength = line.length();
+								while(line.length() <= 100) {
+									line = ' ' + line;
+								}
+							}
+							result += line + "\n";
+							
+						}
+						textArea.setText(result);
+					}
+					catch(Exception e) {}
 				}
 				
 			}		
@@ -194,7 +220,8 @@ public class ProjectMain extends JFrame {
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
-		JScrollPane scrollPane = new JScrollPane(textArea);
+		textArea.setFont(new Font("monospaced",Font.PLAIN,12));
+		scrollPane = new JScrollPane(textArea);
 		scrollPane.setBounds(220, 14, 715, 491);
 		panel.add(scrollPane);
 		
