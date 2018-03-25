@@ -6,16 +6,17 @@ import java.text.DecimalFormat;
 
 public class FileData {
 	
-	private int numOfLines, numOfWords, numOfChars, numOfLinesRemoved;
+	private int charPerLine, numOfLines, numOfWords, numOfChars, numOfLinesRemoved, numOfSpacesAdded;
 	private double avgLineWords, avgLineLength;
 	private DecimalFormat avgFormat;
 	private String[] words;
 	
 	public FileData(String input) {
-
+		this.charPerLine = 80;
 		this.numOfLines = 0;
 		this.numOfWords = 0;
 		this.numOfLinesRemoved = 0;
+		this.numOfSpacesAdded = 0;
 		this.avgLineWords = 0.00;
 		this.avgLineLength = 0.00;
 		this.avgFormat = new DecimalFormat("0.00");
@@ -62,10 +63,10 @@ public class FileData {
 				if(line.length() == 0) {
 					
 				}
-				else if(limit == 0 && line.length() > 80 && line.indexOf(" ") == -1) {
+				else if(limit == 0 && line.length() > charPerLine && line.indexOf(" ") == -1) {
 					outputFile.println(line);
 				}
-				else if(limit > 0 && line.length() > 80 && line.indexOf(" ") == -1) {
+				else if(limit > 0 && line.length() > charPerLine && line.indexOf(" ") == -1) {
 					outputFile.println();
 					outputFile.println(line);
 					limit = 0;
@@ -77,7 +78,7 @@ public class FileData {
 							outputFile.print(words[i]);
 							limit = words[i].length();
 						}
-						else if(limit+words[i].length()+1 <= 80) {
+						else if(limit+words[i].length()+1 <= charPerLine) {
 							outputFile.print(" "+words[i]);
 							limit += words[i].length()+1;
 						}
@@ -95,6 +96,14 @@ public class FileData {
 		catch(Exception e2) {}
 	}
 	
+	public int getCharPerLine() {
+		return charPerLine;
+	}
+	
+	public void setCharPerLine(int input) {
+		charPerLine = input;
+	}
+	
 	public int getNumOfLines() {
 		return numOfLines;
 	}
@@ -105,6 +114,10 @@ public class FileData {
 	
 	public int getNumOfLinesRemoved() {
 		return numOfLinesRemoved;
+	}
+	
+	public int getNumOfSpacesAdded() {
+		return numOfSpacesAdded;
 	}
 	
 	public String getAvgLineWords() {
