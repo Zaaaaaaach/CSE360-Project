@@ -1,8 +1,9 @@
-“Software engineering is essential for the functioning of government, society, and national and
-international businesses and institutions. We can’t run the modern world without software. National
-infrastructures and utilities are controlled by computer-based systems, and most electrical products
-include a computer and controlling software. Industrial manufacturing and distribution is completely
-computerized, as is the financial system. Entertainment, including the music industry, computer
-games, and film and television, is software-intensive. More than 75% of the world’s population have a
-software-controlled mobile phone, and, by 2016, almost all of these will be Internet-enabled” -Ian
-Sommerville
+“Software engineering is essential for the functioning of government, society, and
+national and international businesses and institutions. We can’t run the modern world
+without software. National infrastructures and utilities are controlled by
+computer-based systems, and most electrical products include a computer and controlling
+software. Industrial manufacturing and distribution is completely computerized, as
+is the financial system. Entertainment, including the music industry, computer games,
+and film and television, is software-intensive. More than 75% of the world’s population
+have a software-controlled mobile phone, and, by 2016, almost all of these will be
+Internet-enabled” -Ian Sommerville

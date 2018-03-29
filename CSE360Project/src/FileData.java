@@ -25,8 +25,8 @@ public class FileData {
 
 	}
 	
-	private void calculateFileData(String input) {
-		
+	public void calculateFileData(String input) {
+		reset();
 		try {
 			FileReader reader = new FileReader(input);
 			BufferedReader br = new BufferedReader(reader);
@@ -35,14 +35,13 @@ public class FileData {
 				line = line.trim();
 				numOfLines++;
 				if (line.trim().isEmpty() || line.trim().equals("") || line.trim().equals("\n")) {
-					numOfLinesRemoved++;
+					numOfLines--;
 				} else {
 					words = line.split(" ");
 					numOfWords += words.length;
 					numOfChars += line.length();
 				}
 			}
-			numOfLines -= numOfLinesRemoved;
 			avgLineWords = (double) numOfWords / numOfLines;
 			avgLineLength = (double) numOfChars / numOfLines;
 			br.close();
@@ -61,7 +60,7 @@ public class FileData {
 			while ((line = br.readLine()) != null) {
 				line = line.trim();
 				if(line.length() == 0) {
-					
+					numOfLinesRemoved++;
 				}
 				else if(limit == 0 && line.length() > charPerLine && line.indexOf(" ") == -1) {
 					outputFile.println(line);
@@ -73,8 +72,12 @@ public class FileData {
 				}
 				else {
 					words = line.split(" ");
+					
 					for(int i = 0; i < words.length; i++) {
-						if(limit == 0) {
+						if(words[i].length() == 0) {
+							
+						}
+						else if(limit == 0) {
 							outputFile.print(words[i]);
 							limit = words[i].length();
 						}
@@ -94,6 +97,15 @@ public class FileData {
 			outputFile.close();
 		}
 		catch(Exception e2) {}
+	}
+	
+	private void reset() {
+		this.charPerLine = 80;
+		this.numOfLines = 0;
+		this.numOfWords = 0;
+		this.numOfChars = 0;
+		this.avgLineWords = 0.00;
+		this.avgLineLength = 0.00;
 	}
 	
 	public int getCharPerLine() {

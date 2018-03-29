@@ -24,6 +24,7 @@ public class ProjectMain extends JFrame {
 	private FileReader reader;
 	private FileData fileData;
 	private JScrollPane scrollPane;
+	private boolean single;
 	
 	public ProjectMain() {
 		createView();
@@ -36,6 +37,7 @@ public class ProjectMain extends JFrame {
 	}
 	
 	public void createView() {
+		single = true;
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBounds(0, 0, 950, 550);
@@ -69,9 +71,10 @@ public class ProjectMain extends JFrame {
                     textArea.read(br, null);
                     br.close();
                     textArea.requestFocus();
+                    single = true;
                 }
                 catch(Exception e2) {
-                	System.out.println("{1} exception caught."+ e2);
+                	
                 }
 			}
 		});
@@ -82,29 +85,29 @@ public class ProjectMain extends JFrame {
 		setOutputFile.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				fileChooser.showSaveDialog(ProjectMain.this);
 				try {
 					if (inputFile != null) {
-						FileWriter fw = new FileWriter(fileChooser.getSelectedFile().toString());
-						PrintWriter pw = new PrintWriter(fw);
-						fileData.formatFile(inputFile.toString(), pw);
-						
-						reader = new FileReader(fileChooser.getSelectedFile().toString());
-						fileData = new FileData(fileChooser.getSelectedFile().toString());
-	                    BufferedReader br = new BufferedReader(reader);
-	                    updateLabels();
-	                    textArea.read(br, null);
-	                    inputFile = fileChooser.getSelectedFile();
-	                    
-	                    br.close();
-						
-						pw.close();
-					} else {
-						System.out.println("File is empty");
+						int result = fileChooser.showSaveDialog(null);
+						if(result != JFileChooser.CANCEL_OPTION
+								&& result != JFileChooser.ERROR_OPTION) {
+							FileWriter fw = new FileWriter(fileChooser.getSelectedFile().toString());
+							PrintWriter pw = new PrintWriter(fw);
+							fileData.formatFile(inputFile.toString(), pw);
+							
+							reader = new FileReader(fileChooser.getSelectedFile().toString());
+							fileData.calculateFileData(fileChooser.getSelectedFile().toString());
+							BufferedReader br = new BufferedReader(reader);
+							updateLabels();
+							textArea.read(br, null);
+							inputFile = fileChooser.getSelectedFile();
+							
+							br.close();
+							pw.close();
+						}
 					}
 				}
 				catch(Exception e2) {
-					System.out.println("{2} exception caught."+ e2);
+
 				}
 			}
 		});
@@ -152,7 +155,10 @@ public class ProjectMain extends JFrame {
 						String line, result = "";
 						while ((line = br.readLine()) != null) {
 							line = line.trim();
-							result += line + "\n";
+							result += line + '\n';
+							if(!single) {
+								result += '\n';
+							}
 						}
 						textArea.setText(result);
 					}
@@ -167,7 +173,65 @@ public class ProjectMain extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(inputFile != null) {
-					
+					try {
+						reader = new FileReader(inputFile.toString());
+						BufferedReader br = new BufferedReader(reader);
+						String line, temp = "", result = "";
+						String[] words;
+						int numOfWords, numOfChars, numOfSpaces;
+						while ((line = br.readLine()) != null) {
+							numOfWords = 0; numOfChars = 0; numOfSpaces = 0;
+							line = line.trim();
+							words = line.split(" ");
+							for(int i = 0; i < words.length; i++) {
+								if(words[i].length() != 0) {
+									numOfWords++;
+									numOfChars += words[i].length();
+								}
+							}
+							if(line.length() == 0) {
+								result += '\n';
+							}
+							else if(line.length() >= 99) {
+								result += line + '\n';
+							}
+							else if(numOfWords == 1) {
+								result += words[0] + '\n';
+							}
+							else if(numOfWords == 2) {
+								result += words[0];
+								numOfSpaces = 100 - words[0].length() - words[words.length-1].length()-1;
+								for(int i = 0; i < numOfSpaces; i++) {
+									result += ' ';
+								}
+								result += words[words.length-1] + '\n';
+							}
+							else {
+								temp = "";
+								temp += words[0];
+								numOfSpaces = (100-numOfChars) / (numOfWords-1);
+								for(int i = 1; i < words.length-1; i++) {
+									if(words[i].length() != 0) {
+										for(int j = 0; j < numOfSpaces; j++) {
+											temp += ' ';
+										}
+										temp += words[i];
+									}
+								}
+								numOfSpaces = 100-temp.length()-words[words.length-1].length()-1;
+								for(int i = 0; i < numOfSpaces; i++) {
+									temp += ' ';
+								}
+								temp += words[words.length-1];
+								result += temp + '\n';
+							}
+							if(!single) {
+								result += '\n';
+							}
+						}
+						textArea.setText(result);
+					}
+					catch(IOException e) {}
 				}
 			}		
 		});
@@ -185,12 +249,14 @@ public class ProjectMain extends JFrame {
 						while ((line = br.readLine()) != null) {
 							line = line.trim();
 							if(line.length() != 0) {
-								while(line.length() <= 100) {
+								while(line.length() <= 98) {
 									line = ' ' + line;
 								}
 							}
-							result += line + "\n";
-							
+							result += line + '\n';
+							if(!single) {
+								result += '\n';
+							}
 						}
 						textArea.setText(result);
 					}
@@ -205,8 +271,24 @@ public class ProjectMain extends JFrame {
 		oneSpace.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				if(inputFile != null) {
+					if(!single) {
+						try {
+							reader = new FileReader(inputFile.toString());
+							BufferedReader br = new BufferedReader(reader);
+							String line, result = "";
+							while ((line = br.readLine()) != null) {
+								line = line.trim();
+								result += line + "\n";							
+							}
+							textArea.setText(result);
+						}
+						catch(Exception ex) {}
+						finally {
+							single = true;
+						}
+					}
+				}		
 			}
 			
 		});
@@ -216,8 +298,24 @@ public class ProjectMain extends JFrame {
 		twoSpace.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				if(inputFile != null) {
+					if(single) {
+						try {
+							reader = new FileReader(inputFile.toString());
+							BufferedReader br = new BufferedReader(reader);
+							String line, result = "";
+							while ((line = br.readLine()) != null) {
+								line = line.trim();
+								result += line + "\n\n";							
+							}
+							textArea.setText(result);
+						}
+						catch(Exception ex) {}
+						finally {
+							single = false;
+						}
+					}
+				}				
 			}
 			
 		});
@@ -227,7 +325,7 @@ public class ProjectMain extends JFrame {
 		charLimitInput.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(inputFile != null && Integer.parseInt(charLimitInput.getText()) > 0) {
+				if(inputFile != null) {
 					try {
 						fileData.setCharPerLine(Integer.parseInt(charLimitInput.getText()));
 						updateLabels();
@@ -238,7 +336,7 @@ public class ProjectMain extends JFrame {
 					}
 				}
 				else {
-					charLimitInput.setText("Input a file and an integer > 0");
+					charLimitInput.setText("Input a file first");
 				}
 			}
 			
