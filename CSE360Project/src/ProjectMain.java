@@ -160,7 +160,9 @@ public class ProjectMain extends JFrame {
 								result += '\n';
 							}
 						}
+						fileData.setNumOfSpacesAdded(result.length()-result.replaceAll(" ", "").length());
 						textArea.setText(result);
+						updateLabels();
 					}
 					catch(Exception e) {}
 				}
@@ -229,7 +231,9 @@ public class ProjectMain extends JFrame {
 								result += '\n';
 							}
 						}
+						fileData.setNumOfSpacesAdded(result.length()-result.replaceAll(" ", "").length());
 						textArea.setText(result);
+						updateLabels();
 					}
 					catch(IOException e) {}
 				}
@@ -258,7 +262,9 @@ public class ProjectMain extends JFrame {
 								result += '\n';
 							}
 						}
+						fileData.setNumOfSpacesAdded(result.length()-result.replaceAll(" ", "").length());
 						textArea.setText(result);
+						updateLabels();
 					}
 					catch(Exception e) {}
 				}
@@ -281,7 +287,9 @@ public class ProjectMain extends JFrame {
 								line = line.trim();
 								result += line + "\n";							
 							}
+							fileData.setNumOfSpacesAdded(result.length()-result.replaceAll(" ", "").length());
 							textArea.setText(result);
+							updateLabels();
 						}
 						catch(Exception ex) {}
 						finally {
@@ -308,7 +316,9 @@ public class ProjectMain extends JFrame {
 								line = line.trim();
 								result += line + "\n\n";							
 							}
+							fileData.setNumOfSpacesAdded(result.length()-result.replaceAll(" ", "").length());
 							textArea.setText(result);
+							updateLabels();
 						}
 						catch(Exception ex) {}
 						finally {

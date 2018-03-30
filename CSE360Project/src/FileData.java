@@ -20,7 +20,6 @@ public class FileData {
 		this.avgLineWords = 0.00;
 		this.avgLineLength = 0.00;
 		this.avgFormat = new DecimalFormat("0.00");
-		//formatFile(input);
 		calculateFileData(input);
 
 	}
@@ -31,7 +30,11 @@ public class FileData {
 			FileReader reader = new FileReader(input);
 			BufferedReader br = new BufferedReader(reader);
 			String line = "";
+			int totalLength, lengthExSpaces;
 			while ((line = br.readLine()) != null) {
+				totalLength = line.length();
+				lengthExSpaces = line.replaceAll(" ", "").length();
+				numOfSpacesAdded += (totalLength - lengthExSpaces);
 				line = line.trim();
 				numOfLines++;
 				if (line.trim().isEmpty() || line.trim().equals("") || line.trim().equals("\n")) {
@@ -104,6 +107,7 @@ public class FileData {
 		this.numOfLines = 0;
 		this.numOfWords = 0;
 		this.numOfChars = 0;
+		this.numOfSpacesAdded = 0;
 		this.avgLineWords = 0.00;
 		this.avgLineLength = 0.00;
 	}
@@ -130,6 +134,10 @@ public class FileData {
 	
 	public int getNumOfSpacesAdded() {
 		return numOfSpacesAdded;
+	}
+	
+	public void setNumOfSpacesAdded(int num) {
+		numOfSpacesAdded = num;
 	}
 	
 	public String getAvgLineWords() {
