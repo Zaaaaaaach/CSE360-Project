@@ -337,16 +337,19 @@ public class ProjectMain extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if(inputFile != null) {
 					try {
-						fileData.setCharPerLine(Integer.parseInt(charLimitInput.getText()));
-						updateLabels();
+						if(Integer.parseInt(charLimitInput.getText()) > 0) {
+							fileData.setCharPerLine(Integer.parseInt(charLimitInput.getText()));
+							updateLabels();
+							charLimitInput.setText("");
+						}
+						else {
+							charLimitInput.setText("INPUT AN INTEGER > 0");
+						}
 					}
-					catch(Exception e) {}
-					finally {
-						charLimitInput.setText("");
-					}
+					catch(Exception e) { charLimitInput.setText("INVALID INPUT"); }
 				}
 				else {
-					charLimitInput.setText("Input a file first");
+					charLimitInput.setText("INPUT A FILE FIRST");
 				}
 			}
 			
